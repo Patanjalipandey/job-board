@@ -7,6 +7,6 @@
             </svg>
         </button>
     @endif
-    <input type="text" name="{{ $name }}" placeholder="{{ $placeholder }}" value="{{ $value }}" id="{{ $name }}"
+    <input type="{{ $type }}" name="{{ $name }}" placeholder="{{ $placeholder }}" value="{{ $value }}" id="{{ $name }}"
         class="w-full rounded-md border-0 py-1.5 px-2.5 texxt-sm ring-1 ring-slate-300 placeholder:text-slate-400 focus:ring-2 pr-8" />
 </div>

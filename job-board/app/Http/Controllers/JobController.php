@@ -16,7 +16,10 @@ class JobController extends Controller
         $jobs->when(request('search'), function ($query) {
             $query->where(function ($query) {
                 $query->where('title', 'like', '%' . request('search') . '%')
-                    ->orWhere('description', 'like', '%' . request('search') . '%');
+                    ->orWhere('description', 'like', '%' . request('search') . '%')
+                    ->orWhereHas('employer',function ($query) {
+                        $query->where('company_name', 'like', '%' . request('search') . '%');
+                    });
             });
         })->when(request('min_salary'), function ($query) {
             $query->where('salary', '>=', request('min_salary'));
@@ -27,7 +30,7 @@ class JobController extends Controller
         })->when(request('category'), function ($query) {
             $query->where('category', request('category'));
         });
-        return view('job.index', ['jobs' => $jobs->get()]);
+        return view('job.index', ['jobs' => $jobs->with('employer')->get()]);
     }
 
     /**
@@ -52,7 +55,10 @@ class JobController extends Controller
     public function show(Job $job)
     {
         //
-        return view('job.show', compact('job'));
+        return view(
+            'job.show', 
+            ['job' =>$job->load('employer.jobs')]
+        );
     }
 
     /**
